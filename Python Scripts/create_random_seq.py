@@ -138,4 +138,47 @@ while count < 31:
 with open("Memoshuffled.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(Seq_d)
+    
+    
+#%% truncated exponential distribution of ITI
+import numpy as np
+import scipy.stats as ss
+import matplotlib.pyplot as plt
+
+def trunc_exp_rv(low, high, scale, size):
+    rnd_cdf = np.random.uniform(ss.expon.cdf(x=low, scale=scale),
+                                ss.expon.cdf(x=high, scale=scale),
+                                size=size)
+    return ss.expon.ppf(q=rnd_cdf, scale=scale)
+
+# plt.hist(trunc_exp_rv(1, 10, Lambda, Size))
+# plt.xlim(0, 12)
+import scipy.optimize as so
+def solve_for_l(low, high, ept_mean):
+    A = np.array([low, high])
+    return 1/so.fmin(lambda L: ((np.diff(np.exp(-A*L)*(A*L+1)/L)/np.diff(np.exp(-A*L)))-ept_mean)**2,
+                     x0=0.5,
+                     full_output=False, disp=False)
+def F(low, high, ept_mean, size):
+    return trunc_exp_rv(low, high,
+                        solve_for_l(low, high, ept_mean),
+                        size)
+
+#%%
+low =.5
+high=10
+mean =2
+size=32
+scale = solve_for_l(low, high, mean)
+res=0
+while np.mean(res) < mean-.01 or np.mean(res) > mean+.01:
+    res = trunc_exp_rv(low, high, scale, size)
+plt.hist(res)
+print(np.mean(res))
+
+
+vals = (np.round(res*1000))
+values = list(vals.astype(int))
+np.savetxt("truncex.csv", values, delimiter=",")
+
 
