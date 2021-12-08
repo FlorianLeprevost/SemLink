@@ -112,8 +112,6 @@ with open("DecShuffled.csv", "w", newline="") as f:
 
 #%% MEMO
 
-#%% Decision
-
 #S1
 with open('memostim.csv', newline='') as f:
     reader = csv.reader(f)
