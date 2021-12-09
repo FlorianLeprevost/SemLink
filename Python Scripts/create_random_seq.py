@@ -167,7 +167,7 @@ def F(low, high, ept_mean, size):
 #%%
 low =.5
 high=10
-mean =2
+mean =1
 size=32
 scale = solve_for_l(low, high, mean)
 res=0

@@ -9,7 +9,7 @@ import pandas as pd
 import matplotlib as plt
 from math import isnan
 import numpy as np
-df = pd.read_csv("subject-10.csv")
+df = pd.read_csv("subject-15.csv")
 
 
 #%% find trials
@@ -52,7 +52,7 @@ dfcond = dfok[dfok["trials_cond"]==1]
 dfdec = dfok[dfok["trials_dec"]==1]
 
 #%%
-DFc = dfcond[49:]#select one df
+DFc = dfcond#select one df
 DFc[["correct", "paired", "Reward", "RT"]].groupby(["paired", "Reward"]).mean()
 
 #%%
