@@ -176,9 +176,61 @@ for i in range(4):
         plt.xlabel("reward")
     if i==0 or i ==2:
         plt.ylabel("RT (ms)")
+plt.savefig('rewardspaired.jpg')
 
 #%%
+#%% nicer figures mean + sd REWARD
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).mean()
+avg.reset_index(level=0, inplace=True)
 
+std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).std()
+std.reset_index(level=0, inplace=True)
+
+plt.figure(figsize=(8, 6), dpi=100)
+for i in range(4):
+    plt.subplot(2,2,i+1)
+    dats = list(avg[avg["phase"]==phases[i]]["RT"])
+    sem = np.array(list(std[std["phase"]==phases[i]]["RT"]))/np.sqrt(len(part_files))
+    plt.errorbar([1,2],dats,sem, ecolor="black", c="black",linewidth=.5)
+    plt.scatter([1,2],dats, marker="s", c="black")
+    # plt.ylim([600,1100])
+    plt.xticks([1,2], [0,1])
+    lims = plt.gca().get_ylim()
+    limsx = plt.gca().get_xlim()
+    plt.title(phases[i])
+
+    if i==3 or i ==2:
+        plt.xlabel("reward")
+    if i==0 or i ==2:
+        plt.ylabel("RT (ms)")
+plt.savefig('rewards.jpg')
+#%% nicer figures mean + sd PAIRED
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).mean()
+avg.reset_index(level=0, inplace=True)
+
+std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).std()
+std.reset_index(level=0, inplace=True)
+
+plt.figure(figsize=(8, 6), dpi=100)
+for i in range(4):
+    plt.subplot(2,2,i+1)
+    dats = list(avg[avg["phase"]==phases[i]]["RT"])
+    sem = np.array(list(std[std["phase"]==phases[i]]["RT"]))/np.sqrt(len(part_files))
+    plt.errorbar([1,2],dats,sem, ecolor="black", c="black",linewidth=.5)
+    plt.scatter([1,2],dats, marker="s", c="black")
+    # plt.ylim([600,1100])
+    plt.xticks([1,2], [0,1])
+    lims = plt.gca().get_ylim()
+    limsx = plt.gca().get_xlim()
+    plt.title(phases[i])
+
+    if i==3 or i ==2:
+        plt.xlabel("paired")
+    if i==0 or i ==2:
+        plt.ylabel("RT (ms)")
+plt.savefig('paired.jpg')
+
+#%%
 # #which trial rewarded
 # idx_cond_reward = [df["Reward"][i] for i in range(len(cnt)) if idx_cond_trials[i]==1]
 # #current winnings
