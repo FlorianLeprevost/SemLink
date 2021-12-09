@@ -126,7 +126,8 @@ for participant in range(len(part_files)):
     liststock=processpart(participant_file)
     for i in range(4):
         DFc = liststock[i]
-        y = DFc[["correct", "paired", "Reward", "RT"]].groupby(["paired", "Reward"]).mean()
+        DFc = DFc[DFc["correct"]==1]                                                        #remove errortrials
+        y = DFc[["correct", "paired", "Reward", "RT"]].groupby(["paired", "Reward"]).mean() #create sun stats
         y["participant"]= participant
         y["phase"]= phases[i]
         y.reset_index(level=0, inplace=True)
@@ -136,8 +137,7 @@ for participant in range(len(part_files)):
 result = pd.concat(frames)
 
 
-
-x=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).mean()
+x=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).median()
 print(x)
 
 
@@ -151,7 +151,7 @@ for i in range(4):
     plt.ylim([500,1300])
     
 #%% nicer figures mean + sd
-avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).mean()
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).median()
 avg.reset_index(level=0, inplace=True)
 
 std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).std()
@@ -162,8 +162,8 @@ for i in range(4):
     plt.subplot(2,2,i+1)
     dats = list(avg[avg["phase"]==phases[i]]["RT"])
     sem = np.array(list(std[std["phase"]==phases[i]]["RT"]))/np.sqrt(len(part_files))
-    plt.errorbar([1,2,3,4],dats,sem, ecolor="black", c="black",linewidth=.5)
-    plt.scatter([1,2,3,4],dats, marker="s", c="black")
+    plt.errorbar([1,2,3,4],dats,sem, ecolor="black", c="black",linewidth=0, marker="s",elinewidth=.5)
+    plt.scatter([1,2,3,4],dats, marker="s", c="black",zorder=1)
     # plt.ylim([600,1100])
     plt.xticks([1,2,3,4], [0,1,0,1])
     lims = plt.gca().get_ylim()
@@ -180,7 +180,7 @@ plt.savefig('rewardspaired.jpg')
 
 #%%
 #%% nicer figures mean + sd REWARD
-avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).mean()
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).median()
 avg.reset_index(level=0, inplace=True)
 
 std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).std()
@@ -205,7 +205,7 @@ for i in range(4):
         plt.ylabel("RT (ms)")
 plt.savefig('rewards.jpg')
 #%% nicer figures mean + sd PAIRED
-avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).mean()
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).median()
 avg.reset_index(level=0, inplace=True)
 
 std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).std()
