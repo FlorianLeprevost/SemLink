@@ -126,8 +126,8 @@ for participant in range(len(part_files)):
     liststock=processpart(participant_file)
     for i in range(4):
         DFc = liststock[i]
-        DFc = DFc[DFc["correct"]==1]                                                        #remove errortrials
-        y = DFc[["correct", "paired", "Reward", "RT"]].groupby(["paired", "Reward"]).mean() #create sun stats
+        DFc = DFc[DFc["correct"]==1]                                                             #remove errortrials
+        y = DFc[["correct", "paired", "Reward", "RT"]].groupby(["paired", "Reward"]).median() #create sun stats
         y["participant"]= participant
         y["phase"]= phases[i]
         y.reset_index(level=0, inplace=True)
@@ -137,7 +137,7 @@ for participant in range(len(part_files)):
 result = pd.concat(frames)
 
 
-x=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).median()
+x=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).mean()
 print(x)
 
 
@@ -151,7 +151,7 @@ for i in range(4):
     plt.ylim([500,1300])
     
 #%% nicer figures mean + sd
-avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).median()
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).mean()
 avg.reset_index(level=0, inplace=True)
 
 std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase","paired", "Reward"]).std()
@@ -180,7 +180,7 @@ plt.savefig('rewardspaired.jpg')
 
 #%%
 #%% nicer figures mean + sd REWARD
-avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).median()
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).mean()
 avg.reset_index(level=0, inplace=True)
 
 std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "Reward"]).std()
@@ -205,7 +205,7 @@ for i in range(4):
         plt.ylabel("RT (ms)")
 plt.savefig('rewards.jpg')
 #%% nicer figures mean + sd PAIRED
-avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).median()
+avg=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).mean()
 avg.reset_index(level=0, inplace=True)
 
 std=result[["phase","correct", "paired", "Reward", "RT"]].groupby(["phase", "paired"]).std()
