@@ -4,12 +4,12 @@ Created on Thu Nov 25 15:45:47 2021
 
 @author: Florian Leprevost
 """
-
+#cd D:\Users\install\SemLink
 import pandas as pd
 import matplotlib as plt
 from math import isnan
 import numpy as np
-df = pd.read_csv("subject-10.csv")
+df = pd.read_csv("subject-140.csv")
 
 
 #%% find trials
