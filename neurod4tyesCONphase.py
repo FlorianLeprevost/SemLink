@@ -8,7 +8,7 @@ else:
     from neurodesign import experiment, optimisation 
 EXP = experiment( 
     TR = 2.8, 
-     n_trials = 64, 
+     n_trials = 96, 
      P = [0.25, 0.25, 0.25, 0.25], 
      C = [[0.25, -0.25, 0.25, -0.25],\
           [0.25, 0.25, -0.25, -0.25],\
@@ -43,8 +43,8 @@ POP = optimisation(
      weights = [0.0, 0.5, 0.25, 0.25], 
      I = 4, 
      preruncycles = 10, 
-     cycles = 100, 
-     convergence = 1000, 
+     cycles = 500, 
+     convergence = 5000, 
      folder = '/tmp', 
      outdes = 50, 
      Aoptimality = True, 
@@ -71,7 +71,7 @@ for i in range(20):
         print(i)
         
 #%% test order
-countcat=[None]*4
+countcat=[None]*6
 for i in range(4):
     ordercar = order[0+i*16:16+i*16]
     for j in range(4):
@@ -79,22 +79,22 @@ for i in range(4):
     print(countcat)
     if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== countcat[1]:
         print(i)
-#%% manually create order with best design
-orderlist=[[1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 1, 3, 0, 2],\
-           [1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
-               [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
-                   [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 2, 3, 0, 1]]
+# #%% manually create order with best design
+# orderlist=[[1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 1, 3, 0, 2],\
+#            [1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
+#                [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
+#                    [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 2, 3, 0, 1]]
 
-fullDECseq = list()
-for nrep in range(4):
-    seq16 = orderlist[np.random.randint(0,4)]
-    seq16 = np.array(seq16) + np.random.randint(0,4)
-    for el in range(16):
-        if seq16[el]>=4:
-            seq16[el] = seq16[el]-4
-        # if nrep>=2:
-        #     seq16[el] = seq16[el]+4
-        fullDECseq.append(seq16[el])
+# fullDECseq = list()
+# for nrep in range(4):
+#     seq16 = orderlist[np.random.randint(0,4)]
+#     seq16 = np.array(seq16) + np.random.randint(0,4)
+#     for el in range(16):
+#         if seq16[el]>=4:
+#             seq16[el] = seq16[el]-4
+#         # if nrep>=2:
+#         #     seq16[el] = seq16[el]+4
+#         fullDECseq.append(seq16[el])
     
 #%% save
 import pickle
@@ -105,14 +105,16 @@ file_name = "D:/Users/install/SemLink/DECparam.pkl"
 open_file = open(file_name, "wb")
 pickle.dump(orderDECphase, open_file)
 open_file.close()
+#%%
 
 open_file = open(file_name, "rb")
 loaded_list = pickle.load(open_file)
-
+ITI = loaded_list[1]
+order = loaded_list[0]
 #%% change for dec trials so that = objects
 import numpy as np
 order[32:]=list(np.array(order[32:])+4)
-#%% add file names
+#%% add file names DEC
 import csv
 import random
 with open('DecstimAll.csv', newline='') as f:
@@ -135,6 +137,7 @@ from copy import deepcopy
 
 Seq_d = list()
 count = 0
+iticount=1
 stock = deepcopy(list_names)
 
 for el in order:
@@ -143,11 +146,62 @@ for el in order:
         count = 0
     options = stock[el]
     random.shuffle(options)
+    options[0].append(ITI[iticount])
     Seq_d = Seq_d + [options[0]]
     stock[el].remove(options[0])
     count +=1
-    print(count)    
+    print(count)
+    iticount+=1
+    if iticount==64:
+        iticount=0    
 #% save
 with open("DECOK.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerows(Seq_d)
+    
+#%% add file names CON
+import csv
+import random
+with open('Condstim.csv', newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+    
+
+data1 = data[:]
+#organize by 8 types
+list_names = [list()]*4
+for idx in range(4):
+    count = 0
+    for el in data1:
+        if int(el[3])== idx:
+            
+            list_names[idx] = list_names[idx] + [el]
+            count+=1
+            
+#%%
+from copy import deepcopy
+
+Seq_d = list()
+count = 0
+iticount = 1
+
+stock = deepcopy(list_names)
+
+for el in order:
+    if count>15:
+        stock = deepcopy(list_names)
+        count = 0
+    options = stock[el]
+    random.shuffle(options)
+    options[0].append(ITI[iticount])
+    Seq_d = Seq_d + [options[0]]
+    stock[el].remove(options[0])
+    count +=1
+    print(count)  
+    iticount+=1
+    if iticount==96:
+        iticount=0
+#% save
+with open("CONOK.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(Seq_d)
