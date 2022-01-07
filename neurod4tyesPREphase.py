@@ -243,7 +243,7 @@ iticount = 1
 stock = deepcopy(list_names)
 
 for el in order:
-    if count>15:
+    if count>19:
         stock = deepcopy(list_names)
         count = 0
     options = stock[el]
@@ -254,9 +254,9 @@ for el in order:
     count +=1
     print(count)  
     iticount+=1
-    if iticount==96:
+    if iticount==120:
         iticount=0
 #% save
-with open("CONOK.csv", "w", newline="") as f:
+with open("PREOK.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(Seq_d)
