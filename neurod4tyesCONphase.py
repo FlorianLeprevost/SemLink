@@ -205,3 +205,51 @@ for el in order:
 with open("CONOK.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(Seq_d)
+    
+#%%
+#%% add file names CON
+import csv
+import random
+with open('Condstim.csv', newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+    
+
+data1 = data[:]
+#organize by 8 types
+list_names = [list()]*4
+for idx in range(4):
+    count = 0
+    for el in data1:
+        if int(el[3])== idx:
+            
+            list_names[idx] = list_names[idx] + [el]
+            count+=1
+            
+#%%
+from copy import deepcopy
+
+Seq_d = list()
+count = 0
+iticount = 1
+
+stock = deepcopy(list_names)
+
+for el in order:
+    if count>15:
+        stock = deepcopy(list_names)
+        count = 0
+    options = stock[el]
+    random.shuffle(options)
+    options[0].append(ITI[iticount])
+    Seq_d = Seq_d + [options[0]]
+    stock[el].remove(options[0])
+    count +=1
+    print(count)  
+    iticount+=1
+    if iticount==96:
+        iticount=0
+#% save
+with open("CONOK.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerows(Seq_d)

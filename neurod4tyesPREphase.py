@@ -27,17 +27,17 @@ EXP = experiment(
      restdur = 0.0, 
      ITImodel = 'exponential', 
      ITImin = 1.5, 
-     ITImean = 2.5, 
-     ITImax = 10.0, 
+     ITImean = 3, 
+     ITImax = 17.0, 
      confoundorder = 3, 
-     maxrep = 4, 
+     maxrep = 30, 
      hardprob = False, 
      t_pre = 0.0, 
      t_post = 0.0, 
 ) 
  
-# seed = 7207 
-seed = 7295 
+seed = 7207 
+# seed = 7295 
 POP = optimisation( 
     experiment = EXP, 
      G = 20, 
@@ -238,7 +238,7 @@ from copy import deepcopy
 
 Seq_d = list()
 count = 0
-iticount = 1
+iticount = 0
 
 stock = deepcopy(list_names)
 
@@ -254,8 +254,8 @@ for el in order:
     count +=1
     print(count)  
     iticount+=1
-    if iticount==120:
-        iticount=0
+    # if iticount==120:
+    #     iticount=0
 #% save
 with open("PREOK.csv", "w", newline="") as f:
     writer = csv.writer(f)
