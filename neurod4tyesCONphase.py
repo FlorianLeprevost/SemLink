@@ -8,7 +8,7 @@ else:
     from neurodesign import experiment, optimisation 
 EXP = experiment( 
     TR = 2.8, 
-     n_trials = 96, 
+     n_trials = 48, 
      P = [0.25, 0.25, 0.25, 0.25], 
      C = [[0.25, -0.25, 0.25, -0.25],\
           [0.25, 0.25, -0.25, -0.25],\
@@ -24,17 +24,21 @@ EXP = experiment(
      restnum = 0, 
      restdur = 0.0, 
      ITImodel = 'exponential', 
-     ITImin = 0.5, 
-     ITImean = 2.0, 
+     ITImin = 0.6, 
+     ITImean = 2.5, 
      ITImax = 10.0, 
      confoundorder = 3, 
-     maxrep = 4, 
+     maxrep = 12, 
      hardprob = False, 
      t_pre = 0.0, 
-     t_post = 1.0, 
+     t_post = 0.0, 
 ) 
  
 seed = 7207 
+# seed = 8000 
+# seed = 9000 
+# seed = 9050 
+# seed = 9050 
 POP = optimisation( 
     experiment = EXP, 
      G = 20, 
@@ -64,7 +68,7 @@ print(order)
 alldes = POP.designs
 countcat=[None]*4
 for i in range(20):
-    ordercar = alldes[i].order[0:16]
+    ordercar = alldes[i].order
     for j in range(4):
         countcat[j]= ordercar.count(j)
     if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== countcat[1]:
@@ -220,35 +224,58 @@ data1 = data[:]
 list_names = [list()]*4
 for idx in range(4):
     count = 0
-    for el in data1:
-        if int(el[3])== idx:
-            
-            list_names[idx] = list_names[idx] + [el]
-            count+=1
+    for reps in range(3):
+        for el in data1:
+            if int(el[3])== idx:
+                
+                list_names[idx] = list_names[idx] + [el]
+                count+=1
             
 #%%
 from copy import deepcopy
 
 Seq_d = list()
 count = 0
-iticount = 1
-
+iticount = 0
+empty_list = list()
+random.shuffle(list_names)
 stock = deepcopy(list_names)
 
+store_prev = [0,0,0,0]
+
 for el in order:
-    if count>15:
-        stock = deepcopy(list_names)
-        count = 0
+    # if count>15:
+    #     stock = deepcopy(list_names)
+    #     count = 0
     options = stock[el]
-    random.shuffle(options)
-    options[0].append(ITI[iticount])
-    Seq_d = Seq_d + [options[0]]
+    
+    empty_list.append(el) #    
+    #remake list that tracks nb of rep of each categ
+    for i in range(4):
+        store_prev[i] = empty_list.count(i)
+        
+    if store_prev[el]%4==0:
+        random.shuffle(options)
+    if count>=1:
+        print(options[0])
+        print(Seq_d[-1][0:4])
+        print('xxxxxxxx')
+        while options[0] == Seq_d[-1][0:4]: #no repetition
+            random.shuffle(options)
+
+    
+    xel = deepcopy(options[0])
+    xel.append(ITI[iticount])
+    
+    Seq_d = Seq_d + [xel]
     stock[el].remove(options[0])
     count +=1
     print(count)  
     iticount+=1
     if iticount==96:
         iticount=0
+    # if count >20:
+    #     break
 #% save
 with open("CONOK.csv", "w", newline="") as f:
     writer = csv.writer(f)

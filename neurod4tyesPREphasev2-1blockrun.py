@@ -36,12 +36,10 @@ EXP = experiment(
      t_post = 0.0, 
 ) 
  
-# seed = 7207 
-# seed = 72950 
-# seed = 1234 
-# seed = 4567 
-# seed = 4589
-seed = 5678
+seed = 4562 
+
+# seed = 5678
+# seed = 6789
 
 POP = optimisation( 
     experiment = EXP, 
@@ -238,6 +236,7 @@ for idx in range(5):
             list_names[idx] = list_names[idx] + [el]
             count+=1
             
+
 #%%
 from copy import deepcopy
 
@@ -245,6 +244,7 @@ Seq_d = list()
 count = 0
 iticount = 0
 
+random.shuffle(list_names)
 stock = deepcopy(list_names)
 
 for el in order:
