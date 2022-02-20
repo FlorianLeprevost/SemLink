@@ -60,59 +60,58 @@ order=POP.bestdesign.order
 print(ITI)
 print(order)
 
-#%%
-alldes = POP.designs
-countcat=[None]*4
-for i in range(20):
-    ordercar = alldes[i].order
-    for j in range(4):
-        countcat[j]= ordercar.count(j)
-    print(countcat)
-    if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== countcat[1]:
-        print(i)
-#%% ok series
-[2,2,0,0,1,1,2,2,3,3,3,3,1,1,0,0,2,2,1,1,1,1,3,3,2,2,0,0,0,0,3,3]
-[2,1,1,3,0,1,2,2,3,3,3,0,0,1,0,0,2,1,1,1,3,3,2,2,2,2,0,0,0,3,3,1]
-[1,1,3,0,0,2,2,2,3,3,3,3,1,1,0,0,2,2,1,1,1,1,3,3,2,2,0,0,0,0,3,2]
-[2,1,3,0,0,2,2,2,3,3,3,3,1,1,0,0,2,2,1,1,1,1,3,3,2,2,0,0,0,0,3,1]
+# #%%
+# alldes = POP.designs
+# countcat=[None]*4
+# for i in range(20):
+#     ordercar = alldes[i].order
+#     for j in range(4):
+#         countcat[j]= ordercar.count(j)
+#     print(countcat)
+#     if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== countcat[1]:
+#         print(i)
+# #%% ok series
+# [2,2,0,0,1,1,2,2,3,3,3,3,1,1,0,0,2,2,1,1,1,1,3,3,2,2,0,0,0,0,3,3]
+# [2,1,1,3,0,1,2,2,3,3,3,0,0,1,0,0,2,1,1,1,3,3,2,2,2,2,0,0,0,3,3,1]
+# [1,1,3,0,0,2,2,2,3,3,3,3,1,1,0,0,2,2,1,1,1,1,3,3,2,2,0,0,0,0,3,2]
+# [2,1,3,0,0,2,2,2,3,3,3,3,1,1,0,0,2,2,1,1,1,1,3,3,2,2,0,0,0,0,3,1]
 #%% test order
 countcat=[None]*4
-for i in range(4):
-    ordercar = order[0+i*16:16+i*16]
-    for j in range(4):
-        countcat[j]= ordercar.count(j)
-    print(countcat)
-    if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== countcat[1]:
-        print(i)
-#%% manually create order with best design
-orderlist=[[1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 1, 3, 0, 2],\
-           [1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
-               [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
-                   [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 2, 3, 0, 1]]
+ordercar = order
+for j in range(4):
+    countcat[j]= ordercar.count(j)
+print(countcat)
+if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== countcat[1]:
+    print("ok")
+# #%% manually create order with best design
+# orderlist=[[1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 1, 3, 0, 2],\
+#            [1, 3, 0, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
+#                [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 0, 1, 2, 3],\
+#                    [0, 3, 1, 0, 2, 2, 2, 0, 3, 3, 1, 1, 2, 3, 0, 1]]
 
-fullDECseq = list()
-for nrep in range(4):
-    seq16 = orderlist[np.random.randint(0,4)]
-    seq16 = np.array(seq16) + np.random.randint(0,4)
-    for el in range(16):
-        if seq16[el]>=4:
-            seq16[el] = seq16[el]-4
-        # if nrep>=2:
-        #     seq16[el] = seq16[el]+4
-        fullDECseq.append(seq16[el])
+# fullDECseq = list()
+# for nrep in range(4):
+#     seq16 = orderlist[np.random.randint(0,4)]
+#     seq16 = np.array(seq16) + np.random.randint(0,4)
+#     for el in range(16):
+#         if seq16[el]>=4:
+#             seq16[el] = seq16[el]-4
+#         # if nrep>=2:
+#         #     seq16[el] = seq16[el]+4
+#         fullDECseq.append(seq16[el])
     
-#%% save
-import pickle
+# #%% save
+# import pickle
 
-orderDECphase = [order, ITI]
+# orderDECphase = [order, ITI]
  
-file_name = "D:/Users/install/SemLink/DECparam.pkl"
-open_file = open(file_name, "wb")
-pickle.dump(orderDECphase, open_file)
-open_file.close()
+# file_name = "D:/Users/install/SemLink/DECparam.pkl"
+# open_file = open(file_name, "wb")
+# pickle.dump(orderDECphase, open_file)
+# open_file.close()
 
-open_file = open(file_name, "rb")
-loaded_list = pickle.load(open_file)
+# open_file = open(file_name, "rb")
+# loaded_list = pickle.load(open_file)
 
 #%% change for dec trials so that = objects
 import numpy as np

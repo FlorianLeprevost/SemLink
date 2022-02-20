@@ -89,7 +89,7 @@ from copy import deepcopy
 
 Allblocks = list()
 
-for block in range(1,5):
+for block in range(1,9):
     file = 'CONOKblock' + str(block) + '.csv'
     with open(file, newline='') as f:
         reader = csv.reader(f)

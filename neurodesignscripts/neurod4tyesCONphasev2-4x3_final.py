@@ -1,11 +1,14 @@
 #To fill
-blocknb = 5 #write the nb of the block this is for
+blocknb = 1 #write the nb of the block this is for
 # seed = 7207  #to have a different result each time, change the number
+seed = 6512
 # seed = 1289
 # seed = 1234
 # seed = 9876
-seed = 9584
-# seed = 9876
+# seed = 9584
+# seed = 6514
+# seed = 3584
+# seed = 6328 bad
 
 
 import os 
@@ -64,7 +67,7 @@ POP = optimisation(
  
 POP.optimise() 
 # POP.download()
-#%#
+#%
 ITI=POP.bestdesign.ITI
 order=POP.bestdesign.order
 print(ITI)
@@ -100,46 +103,52 @@ if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== cou
                 if int(el[3])== idx:
                     list_names[idx] = list_names[idx] + [el]
                     count+=1
+
+    Continue =1
+    fail=0
+    while Continue ==1:
+                    
+        Seq_d = list()
+        iticount = 0
+        empty_list = list()
+        random.shuffle(list_names)
+        random.shuffle(list_names)
+        random.shuffle(list_names)
+        stock = deepcopy(list_names)
+        
+        store_prev = [0,0,0,0]
+        
+        for el in order:
+            options = stock[el]
+            empty_list.append(el) #    
+            #remake list that tracks nb of rep of each categ
+            for i in range(4):
+                store_prev[i] = empty_list.count(i)
                 
-    Seq_d = list()
-    count = 0
-    iticount = 0
-    empty_list = list()
-    random.shuffle(list_names)
-    random.shuffle(list_names)
-    random.shuffle(list_names)
-    stock = deepcopy(list_names)
-    
-    store_prev = [0,0,0,0]
-    
-    for el in order:
-        options = stock[el]
-        empty_list.append(el) #    
-        #remake list that tracks nb of rep of each categ
-        for i in range(4):
-            store_prev[i] = empty_list.count(i)
-            
-        if store_prev[el]%4==0:
-            random.shuffle(options)
-        if count>=1:
-            print(options[0])
-            print(Seq_d[-1][0:4])
-            print('xxxxxxxx')
-            while options[0] == Seq_d[-1][0:4]: #no repetition
+            if store_prev[el]%4==0:
                 random.shuffle(options)
-    
+            if iticount>=1:
+                count2 = 0
+                #check no repetition, track faillures but allow to continue
+                while options[0] == Seq_d[-1][0:4] and count2<200:
+                    random.shuffle(options)
+                    count2+=1
+                if count2 == 200:
+                    fail=1
+            
+            xel = deepcopy(options[0])
+            xel.append(ITI[iticount])
+            
+            Seq_d = Seq_d + [xel]
+            stock[el].remove(options[0])
+            print(iticount)  
+            iticount+=1
         
-        xel = deepcopy(options[0])
-        xel.append(ITI[iticount])
-        
-        Seq_d = Seq_d + [xel]
-        stock[el].remove(options[0])
-        print(iticount)  
-        iticount+=1
-    
+        if fail !=1:
+            Continue = 0
     #% save
     filename = "CONOKblock" + str(blocknb) + ".csv"
     with open(filename, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(Seq_d)
-        
+            
