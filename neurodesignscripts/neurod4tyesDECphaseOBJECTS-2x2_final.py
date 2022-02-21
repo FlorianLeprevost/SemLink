@@ -3,11 +3,14 @@ blocknb = 4 #write the nb of the block this is for
 # seed = 6512
 # seed = 1289
 # seed = 1234
-seed = 9876
-# seed = 9584
-# seed = 6514
+# seed = 9876
+# seed = 9584 bad
+# seed = 6514 bad
 # seed = 3584
-# seed = 6328 bad
+# seed = 6328
+# seed = 5328  bad
+# seed = 6548
+seed = 5204
 
 import os 
 if 'TASK_UID' in os.environ.keys(): 
@@ -82,7 +85,7 @@ if countcat[0]== countcat[1] and countcat[2]== countcat[1] and countcat[3]== cou
 #% add file names
 import csv
 import random
-with open('DecstimScenes.csv', newline='') as f:
+with open('Condstim.csv', newline='') as f:
     reader = csv.reader(f)
     data = list(reader)
 
@@ -140,42 +143,7 @@ with open('DecstimScenes.csv', newline='') as f:
         if fail !=1:
             Continue = 0
     #% save
-filename = "DECOKSCENESblock"  + str(blocknb) + ".csv"
-with open(filename, "w", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerows(Seq_d)
-            
-    
-#%%
-data1 = data[:]
-#organize by 8 types
-list_names = [list()]*4
-for idx in range(4):
-    count = 0
-    for el in data1:
-        if int(el[3])== idx:
-            list_names[idx] = list_names[idx] + [el]
-            count+=1
-            
-#%%
-from copy import deepcopy
-
-Seq_d = list()
-count = 0
-stock = deepcopy(list_names)
-
-for el in order:
-    if count>15:
-        stock = deepcopy(list_names)
-        count = 0
-    options = stock[el]
-    random.shuffle(options)
-    Seq_d = Seq_d + [options[0]]
-    stock[el].remove(options[0])
-    count +=1
-    print(count)    
-#% save
-filename = "DECOKSCENESblock"  + str(blocknb) + ".csv"
+filename = "DECOKOBJECTSblock"  + str(blocknb) + ".csv"
 with open(filename, "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(Seq_d)
