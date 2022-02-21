@@ -11,7 +11,7 @@ from copy import deepcopy
 
 Allblocks = list()
 
-for block in range(1,7):
+for block in range(7,13):
     file = 'PREOKblock' + str(block) + '.csv'
     with open(file, newline='') as f:
         reader = csv.reader(f)
@@ -19,10 +19,10 @@ for block in range(1,7):
     stock = deepcopy(data)
         
     #fix ITI (suppress 17 and 1st=0)
-    ma = len(data) -1
-    for nb in range(ma):
-        data[ma - nb][6] = data[ma - nb -1][6]
-    data[0][6] = 0
+    # ma = len(data) -1
+    # for nb in range(ma):
+    #     data[ma - nb][6] = data[ma - nb -1][6]
+    # data[0][6] = 0
     
     Allblocks = Allblocks +data
 
@@ -59,10 +59,10 @@ for block in new_order:
     stock = deepcopy(data)
         
     #fix ITI (suppress 17 and 1st=0)
-    ma = len(data) -1
-    for nb in range(ma):
-        data[ma - nb][6] = data[ma - nb -1][6]
-    data[0][6] = 0
+    # ma = len(data) -1
+    # for nb in range(ma):
+    #     data[ma - nb][6] = data[ma - nb -1][6]
+    # data[0][6] = 0
     
     Allblocks = Allblocks +data
 
@@ -97,10 +97,10 @@ for block in range(1,9):
     stock = deepcopy(data)
         
     #fix ITI (suppress 17 and 1st=0)
-    ma = len(data) -1
-    for nb in range(ma):
-        data[ma - nb][4] = data[ma - nb -1][4]
-    data[0][4] = 0
+    # ma = len(data) -1
+    # for nb in range(ma):
+    #     data[ma - nb][4] = data[ma - nb -1][4]
+    # data[0][4] = 0
     
     
 
