@@ -1,2 +1,2 @@
 # SemLink
-1st PhD project
+PhD project
