@@ -1,4 +1,4 @@
-for blocknb in [8]:#range(1,13):
+for blocknb in range(1,13):
     #To fill
     # blocknb = 1 #write the nb of the block this is for
     # seed = 7207  #to have a different result each time, change the number
