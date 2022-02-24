@@ -52,3 +52,5 @@ contains the excell file used for the balancing of the stimuli
 - practiveV2.osexp: practice experiment pre scanner
 - PhD007_SemanticLink.pptx: contains sum ups of readings on which this experiment is based, and designs abandoned since
 - po-ana.pptx: slides showing the possible and planned analysis of the fmri data.
+### 10. Additional information
+Notes about all the papers read (at least the abstract) can be found here: https://docs.google.com/spreadsheets/d/1JfAOuCa_5fpkuKLyEgGP0BtxpAtOLbiIJzM3AbdCmtM/edit?usp=sharing
