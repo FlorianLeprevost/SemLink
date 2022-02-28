@@ -42,6 +42,7 @@ contains the excell file used for the balancing of the stimuli
 - Methods.docx: contains a draft of the Methods Stimuli and Experimental Procedure Section regarding the experiments
 - OPENSESAME.docx: contains instructions to run the opensesame script AND a complete description of every opensesame object used in the experiment
 - timesv5.xlsx: contains the run durations (of every phase of the 2 orders) in volume number and minutes; based on the ITIs and ISIs of every phase
+- participants_pilots.xlsx: names of participants of the pilot experiment
 - LICENSE
 - README.md
 - behavsem_assov10_02_2022_order1.osexp
